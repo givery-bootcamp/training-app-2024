@@ -73,7 +73,7 @@ jobs:
   backend-ecr-push:
     runs-on: ubuntu-latest
     needs: [backend-build]
-    if: github.ref == 'refs/heads/deploy'
+    if: github.ref == 'refs/heads/temp'
 
     steps:
     - name: Download backend build artifacts
@@ -111,7 +111,7 @@ jobs:
   frontend-s3-push:
     runs-on: ubuntu-latest
     needs: [frontend-build]
-    if: github.ref == 'refs/heads/deploy'
+    if: github.ref == 'refs/heads/temp'
 
     steps:
     - name: Download frontend build artifacts
