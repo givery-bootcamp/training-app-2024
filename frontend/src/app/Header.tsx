@@ -18,7 +18,7 @@ export function Header() {
   return (
     <header className="app-header">
       <NavLink to="/" className="app-header__logo">
-        サンプルアプリケーション
+        サンプルアプリケーション(v1)
       </NavLink>
       <div>
         {user ? (
