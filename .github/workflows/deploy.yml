@@ -108,25 +108,25 @@ jobs:
 
   # frontendのdeploy(s3へのpush)
   # frontend-ecr-pushを使用する場合はこちらはコメントアウトする
-  # frontend-s3-push:
-  #   runs-on: ubuntu-latest
-  #   needs: [frontend-build]
-  #   if: github.ref == 'refs/heads/deploy'
+  frontend-s3-push:
+    runs-on: ubuntu-latest
+    needs: [frontend-build]
+    if: github.ref == 'refs/heads/deploy'
 
-  #   steps:
-  #   - name: Download frontend build artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: frontend-bin
-  #   - name: Configure AWS credentials
-  #     uses: aws-actions/configure-aws-credentials@v4
-  #     with:
-  #       aws-region: ${{ env.AWS_REGION }}
-  #       aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-  #       aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+    steps:
+    - name: Download frontend build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-bin
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ env.AWS_REGION }}
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
 
-  #   - name: Sync files to S3
-  #     run: aws s3 sync dist s3://dena-training-2024/$BUCKET_PREFIX --delete
+    - name: Sync files to S3
+      run: aws s3 sync frontend/dist s3://dena-training-2024/$BUCKET_PREFIX --delete
 
   # frontendのdeploy(ecrへのpushとサービスのdeploy)
   # frontend-s3-pushを使用する場合はこちらはコメントアウトする
