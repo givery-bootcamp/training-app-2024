@@ -37,7 +37,7 @@ jobs:
         name: backend-bin
         path: |
           backend/myapp
-          docker/ci.Dockerfile
+          docker/backend-ci.Dockerfile
 
   frontend-build:
     runs-on: ubuntu-latest
@@ -63,9 +63,9 @@ jobs:
       with:
         name: frontend-bin
         path: |
-          frontend/dist
+          frontend
 
-  ecr-push:
+  backend-ecr-push:
     runs-on: ubuntu-latest
     needs: [backend-build]
     if: github.ref == 'refs/heads/deploy'
@@ -94,14 +94,14 @@ jobs:
         ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
         IMAGE_TAG=latest
 
-        docker build -f docker/ci.Dockerfile -t $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPOSITORY_NAME:$IMAGE_TAG .
+        docker build -f docker/backend-ci.Dockerfile -t $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPOSITORY_NAME:$IMAGE_TAG .
         docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPOSITORY_NAME:$IMAGE_TAG
 
     - name: Update ECS service to force new deployment
       run: |
         aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment
 
-  s3-push:
+  frontend-s3-push:
     runs-on: ubuntu-latest
     needs: [frontend-build]
     if: github.ref == 'refs/heads/deploy'
@@ -119,4 +119,4 @@ jobs:
         aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
 
     - name: Sync files to S3
-      run: aws s3 sync . s3://dena-training-2024/$BUCKET_PREFIX --delete
+      run: aws s3 sync dist s3://dena-training-2024/$BUCKET_PREFIX --delete
