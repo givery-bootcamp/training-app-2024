@@ -154,9 +154,6 @@ jobs:
     - name: Log in to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Verify directory
-      run: ls -l
-
     - name: Build and push Docker image
       run: |
         ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
