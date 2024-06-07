@@ -67,6 +67,7 @@ jobs:
         name: frontend-bin
         path: |
           frontend
+          docker/frontend-ci.Dockerfile
 
   # backendのdeploy(ECR更新とサービスのdeploy)
   backend-ecr-push:
