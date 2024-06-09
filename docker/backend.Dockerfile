@@ -1,4 +1,5 @@
 FROM golang:1.22
+RUN apk add --update --no-cache ca-certificates git
 
 RUN mkdir /go/src/myapp
 WORKDIR /go/src/myapp

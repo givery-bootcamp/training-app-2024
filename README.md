@@ -53,7 +53,7 @@ Reactを開発する人はブラウザの拡張機能をインストールして
 ## How to connect database
 
 ```
-host$ docker-compose exec db mysql training
+host$ docker-compose exec db mysql training -ppassword
 ```
 
 ## How to connect backend/frontend shell

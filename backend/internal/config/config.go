@@ -10,7 +10,7 @@ var Port = 9000
 var CorsAllowOrigin = "http://localhost:3000"
 var DBHostName = "db"
 var DBUserName = "root"
-var DBPassword = ""
+var DBPassword = "password"
 var DBPort = 3306
 var DBName = "training"
 
