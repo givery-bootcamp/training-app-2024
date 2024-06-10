@@ -1,10 +1,10 @@
-package external
+package db
 
 import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"myapp/internal/config"
+	"myapp/config"
 	"os"
 )
 

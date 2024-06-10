@@ -3,19 +3,20 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"myapp/internal/config"
-	"myapp/internal/external"
-	"myapp/internal/middleware"
+	"myapp/config"
+	"myapp/internal/framework/db"
+	"myapp/internal/framework/middleware"
+	"myapp/internal/framework/router"
 )
 
 func main() {
 	// Initialize database
-	external.SetupDB()
+	db.SetupDB()
 
 	// Setup webserver
 	app := gin.Default()
 	app.Use(middleware.Transaction())
 	app.Use(middleware.Cors())
-	middleware.SetupRoutes(app)
-	app.Run(fmt.Sprintf("%s:%d", config.HostName, config.Port))
+	router.SetupRoutes(app)
+	app.Run(fmt.Sprintf(":%d", config.Port))
 }
