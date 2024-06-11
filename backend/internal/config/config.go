@@ -1,34 +1,56 @@
 package config
 
 import (
-	"os"
-	"strconv"
+	"fmt"
+
+	"github.com/spf13/viper"
 )
 
-var HostName = "127.0.0.1"
-var Port = 9000
-var CorsAllowOrigin = "http://localhost:3000"
-var DBHostName = "db"
-var DBPort = 3306
-var DBName = "training"
+type Config struct {
+	Server Server
+	DB     DBConfig
+}
+
+type Server struct {
+	HostName        string `yaml:"hostname"`
+	Port            int    `yaml:"port"`
+	CorsAllowOrigin string `yaml:"corsAllowOrigin"`
+}
+
+type DBConfig struct {
+	Name     string `yaml:"name"`
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	Port     int    `yaml:"port"`
+	Host     string `yaml:"host"`
+}
+
+var config Config
 
 func init() {
-	if v := os.Getenv("HOSTNAME"); v != "" {
-		HostName = v
+	viper.SetDefault("server.hostname", "127.0.0.1")
+	viper.SetDefault("server.port", 9000)
+	viper.SetDefault("server.corsAllowOrigin", "http://localhost:3000")
+
+	viper.SetDefault("db.name", "training")
+	viper.SetDefault("db.user", "root")
+	viper.SetDefault("db.host", "db")
+	viper.SetDefault("db.password", "password")
+	viper.SetDefault("db.port", 3306)
+}
+
+func GetConfig() *Config {
+	viper.SetConfigName("config")
+	viper.SetConfigType("yml")
+	viper.AddConfigPath("internal/config/")
+
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
 	}
-	if v, err := strconv.ParseInt(os.Getenv("PORT"), 10, 64); err == nil {
-		Port = int(v)
+	// UnmarshalしてCにマッピング
+	if err := viper.Unmarshal(&config); err != nil {
+		fmt.Println("config file Unmarshal error", err)
+		panic(err)
 	}
-	if v := os.Getenv("CORS_ALLOW_ORIGIN"); v != "" {
-		CorsAllowOrigin = v
-	}
-	if v := os.Getenv("DB_HOSTNAME"); v != "" {
-		DBHostName = v
-	}
-	if v, err := strconv.ParseInt(os.Getenv("DB_PORT"), 10, 64); err == nil {
-		DBPort = int(v)
-	}
-	if v := os.Getenv("DB_NAME"); v != "" {
-		DBName = v
-	}
+	return &config
 }
