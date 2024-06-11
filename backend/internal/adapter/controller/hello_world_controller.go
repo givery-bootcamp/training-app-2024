@@ -1,11 +1,11 @@
-package controllers
+package controller
 
 import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"myapp/internal/repositories"
-	"myapp/internal/usecases"
+	repositories "myapp/internal/adapter/repository"
+	usecases "myapp/internal/usecase"
 )
 
 func HelloWorld(ctx *gin.Context) {

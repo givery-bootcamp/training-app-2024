@@ -10,7 +10,8 @@ services:
       - ./backend:/go/src/myapp
     command: "air"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       TZ: Asia/Tokyo
   frontend:
@@ -30,10 +31,13 @@ services:
       dockerfile: mysql.Dockerfile
     volumes:
       - ./docker/mysql:/var/lib/mysql
-      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./mysql/sql:/sqlscripts
     ports:
       - '3306:3306'
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=training
+      - MYSQL_ROOT_PASSWORD=password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10

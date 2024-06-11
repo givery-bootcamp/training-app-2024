@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"myapp/internal/external"
+	mydb "myapp/internal/framework/db"
 )
 
 func Transaction() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		db := external.DB.Begin()
+		db := mydb.DB.Begin()
 		defer func() {
 			if 400 <= ctx.Writer.Status() {
 				db.Rollback()

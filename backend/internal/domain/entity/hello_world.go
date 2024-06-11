@@ -1,4 +1,4 @@
-package entities
+package entity
 
 type HelloWorld struct {
 	Lang    string `json:"lang"`
