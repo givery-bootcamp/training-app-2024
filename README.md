@@ -59,7 +59,7 @@ host$ docker-compose exec db mysql training -ppassword
 ## How to connect backend/frontend shell
 
 ```
-host$ docker-compose exec backend bash
+host$ docker-compose exec backend sh
 host$ docker-compose exec frontend bash
 ```
 
