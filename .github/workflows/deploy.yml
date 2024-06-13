@@ -14,8 +14,6 @@ env:
   ECS_CLUSTER: dena-training-2024
   ECS_SERVICE: dena-training-2024-team-0
   BUCKET_PREFIX: team-0
-  ECS_CLUSTER: dena-training-2024
-  ECS_SERVICE: dena-training-2024-team-0
   VITE_API_ENDPOINT_PATH: https://team-0_bk.member0005.track-bootcamp.run
 
 jobs:
